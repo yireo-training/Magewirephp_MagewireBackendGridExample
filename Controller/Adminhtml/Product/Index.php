@@ -13,7 +13,7 @@ class Index implements HttpGetActionInterface
 
     public function execute()
     {
-        $resultPage =$this->resultPageFactory->create();
+        $resultPage = $this->resultPageFactory->create();
         $resultPage->getConfig()->getTitle()->prepend(__('MageWire Products Grid'));
         return $resultPage;
     }

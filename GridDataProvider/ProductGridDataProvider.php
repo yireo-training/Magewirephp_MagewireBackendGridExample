@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Magewirephp\MagewireBackendGridExample\GridDataProvider;
 
@@ -10,13 +11,13 @@ class ProductGridDataProvider implements GridDataProviderInterface
 {
     private int $totalCount = 0;
     private int $totalItems = 0;
-
+    
     public function __construct(
         private ProductRepositoryInterface $productRepository,
         private SearchCriteriaBuilder $searchCriteriaBuilder
     ) {
     }
-
+    
     /**
      * @return array
      */
@@ -24,33 +25,33 @@ class ProductGridDataProvider implements GridDataProviderInterface
     {
         $this->searchCriteriaBuilder->setCurrentPage($page);
         $this->searchCriteriaBuilder->setPageSize($limit);
-
+        
         if (!empty($search)) {
             $this->searchCriteriaBuilder->addFilter('name', $search);
         }
-
+        
         $searchResults = $this->productRepository->getList($this->searchCriteriaBuilder->create());
         $this->totalCount = $searchResults->getTotalCount();
         $this->totalItems = $searchResults->getTotalCount();
         return $searchResults->getItems();
     }
-
+    
     public function getTotalPages(int $limit): int
     {
         return $this->totalCount;
     }
-
-    public function getColumns()
+    
+    public function getColumns(): array
     {
         return [
-            'id' => 'ID',
+            'entity_id' => 'ID',
             'name' => 'Product Name',
             'sku' => 'Product SKU',
             'type' => 'Type',
             'visibility' => 'Visibility',
         ];
     }
-
+    
     public function getTotalItems(): int
     {
         return $this->totalItems;

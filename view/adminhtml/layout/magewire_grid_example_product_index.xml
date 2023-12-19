@@ -4,9 +4,9 @@
     <update handle="magewire_grid"/>
 
     <body>
-        <referenceBlock name="magewire_grid">
+        <referenceBlock name="magewire_grid_data">
             <arguments>
-                <argument name="grid_data_provider" xsi:type="object">Magewirephp\MagewireBackendGridExample\GridDataProvider\ProductGridDataProvider</argument>
+                <argument name="magewire" xsi:type="object">magewireGridProducts</argument>
             </arguments>
         </referenceBlock>
 
