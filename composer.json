@@ -1,5 +1,5 @@
 {
-  "name": "magewirephp/module-magewire-backend-grid-example",
+  "name": "magewirephp/magento2-magewire-backend-grid-example",
   "version": "1.0.0",
   "description": "N/A",
   "type": "magento2-module",
@@ -7,7 +7,7 @@
     "magento/framework": "*"
   },
   "license": [
-    "Proprietary"
+    "OSL-3.0"
   ],
   "autoload": {
     "files": [
