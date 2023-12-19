@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:View/Layout:etc/page_configuration.xsd">
+    <update handle="magewire_grid"/>
+
+    <body>
+        <referenceBlock name="magewire_grid">
+            <arguments>
+                <argument name="grid_data_provider" xsi:type="object">Magewirephp\MagewireBackendGridExample\GridDataProvider\ProductGridDataProvider</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceBlock name="magewire_grid_actions">
+            <block name="add" template="Magewirephp_MagewireBackendGrid::grid/actions/button-add.phtml">
+                <arguments>
+                    <argument name="title" xsi:type="string">Add new product</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>
