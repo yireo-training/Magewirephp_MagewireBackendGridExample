@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Magewirephp\MagewireBackendGridExample\GridDataProvider;
@@ -6,11 +7,12 @@ namespace Magewirephp\MagewireBackendGridExample\GridDataProvider;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magewirephp\MagewireBackendGrid\Grid\DataProvider\GridDataProviderInterface;
+use Magewirephp\MagewireBackendGrid\Grid\State;
 
 class ProductGridDataProvider implements GridDataProviderInterface
 {
-    private int $totalCount = 0;
-    private int $totalItems = 0;
+    private ?State $state = null;
+    private array $items = [];
     
     public function __construct(
         private ProductRepositoryInterface $productRepository,
@@ -18,29 +20,37 @@ class ProductGridDataProvider implements GridDataProviderInterface
     ) {
     }
     
+    public function setState(State $state): GridDataProviderInterface
+    {
+        $this->state = $state;
+        return $this;
+    }
+    
     /**
      * @return array
      */
-    public function getItems(int $page = 0, int $limit = 20, string $search = ''): array
+    public function getItems(): array
     {
-        $this->searchCriteriaBuilder->setCurrentPage($page);
-        $this->searchCriteriaBuilder->setPageSize($limit);
+        if ($this->items) {
+            return $this->items;
+        }
         
-        if (!empty($search)) {
-            $this->searchCriteriaBuilder->addFilter('name', $search);
+        $this->searchCriteriaBuilder->setCurrentPage($this->state->getPage());
+        $this->searchCriteriaBuilder->setPageSize($this->state->getLimit());
+        
+        if (!empty($this->state->getSearch())) {
+            $this->searchCriteriaBuilder->addFilter('name', '%'.$this->state->getSearch().'%', 'like');
         }
         
         $searchResults = $this->productRepository->getList($this->searchCriteriaBuilder->create());
-        $this->totalCount = $searchResults->getTotalCount();
-        $this->totalItems = $searchResults->getTotalCount();
-        return $searchResults->getItems();
+        $this->items = $searchResults->getItems();
+        $this->state->setTotalItems($searchResults->getTotalCount());
+        return $this->items;
     }
     
-    public function getTotalPages(int $limit): int
-    {
-        return $this->totalCount;
-    }
-    
+    /**
+     * @return string[]
+     */
     public function getColumns(): array
     {
         return [
@@ -50,10 +60,5 @@ class ProductGridDataProvider implements GridDataProviderInterface
             'type' => 'Type',
             'visibility' => 'Visibility',
         ];
-    }
-    
-    public function getTotalItems(): int
-    {
-        return $this->totalItems;
     }
 }
