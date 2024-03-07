@@ -6,7 +6,7 @@
     <body>
         <referenceBlock name="magewire_grid_data">
             <arguments>
-                <argument name="magewire" xsi:type="object">magewireGridProducts</argument>
+                <argument name="dataProvider" xsi:type="object">Magewirephp\MagewireBackendGridExample\GridDataProvider\ProductGridDataProvider</argument>
             </arguments>
         </referenceBlock>
 
